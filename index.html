@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B2 English Tense Course</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Apply Inter font */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Hide screens by default */
+        .screen {
+            display: none;
+        }
+        /* Utility class to show the active screen */
+        .screen.active {
+            display: block;
+        }
+        /* Custom styles for answer buttons */
+        .answer-btn {
+            @apply w-full text-center p-4 my-2 bg-sky-500 text-white font-medium rounded-lg shadow-md transition-all duration-150 ease-in-out;
+            @apply hover:bg-sky-600 hover:shadow-lg;
+        }
+        .answer-btn.correct {
+            @apply bg-green-500 text-white font-medium;
+        }
+        .answer-btn.wrong {
+            @apply bg-red-500 text-white font-medium;
+        }
+        .answer-btn:disabled {
+            @apply opacity-70 cursor-not-allowed;
+        }
+    </style>
+</head>
+<body class="bg-sky-50 text-gray-800">
+
+    <!-- Main Application Container -->
+    <div id="app" class="max-w-3xl mx-auto p-4 md:p-8 min-h-screen">
+        
+        <!-- Home Screen -->
+        <div id="home-screen" class="screen active">
+            <header class="text-center mb-8">
+                <!-- Simple illustration -->
+                <div class="w-24 h-24 bg-sky-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v11.494m0 0a8.485 8.485 0 0011.02-6.246 8.485 8.485 0 00-11.02-6.246m0 12.492a8.485 8.485 0 01-11.02-6.246 8.485 8.485 0 0111.02-6.246" />
+                    </svg>
+                </div>
+                <h1 class="text-4xl font-bold text-sky-800">B2 Tense Practice</h1>
+                <p class="text-lg text-gray-600 mt-2">Choose an advanced topic to start your practice.</p>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Dynamically generated quiz buttons will go here -->
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="screen">
+            <header class="mb-6">
+                <h2 id="quiz-title" class="text-3xl font-bold text-sky-800">Quiz Title</h2>
+                <div class="flex justify-between items-center mt-2 text-gray-600">
+                    <span id="progress-text">Question 1 / 10</span>
+                    <span id="current-score-text" class="font-medium">Score: 0</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+                    <div id="progress-bar" class="bg-sky-600 h-2.5 rounded-full" style="width: 10%"></div>
+                </div>
+            </header>
+
+            <!-- Question Area -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <img id="question-image" src="https://placehold.co/600x300/e0f2fe/0c4a6e?text=Loading+Image..." alt="Question context" class="w-full h-48 md:h-64 object-cover rounded-lg mb-6">
+                
+                <p id="question-text" class="text-xl font-medium text-gray-900 mb-6">This is the question text?</p>
+                
+                <div id="answer-buttons" class="flex flex-col">
+                    <!-- Answer buttons will be dynamically inserted here -->
+                </div>
+
+                <div id="feedback-area" class="mt-6">
+                    <p id="feedback-text" class="text-lg font-medium"></p>
+                </div>
+
+                <button id="next-btn" class="w-full bg-sky-600 text-white font-bold py-3 px-6 rounded-lg mt-6 shadow-md transition-all duration-150 hover:bg-sky-700 disabled:bg-gray-400" style="display: none;">
+                    Next Question
+                </button>
+            </div>
+        </div>
+
+        <!-- Summary Screen -->
+        <div id="summary-screen" class="screen">
+            <header class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-sky-800">Quiz Complete!</h1>
+                <p class="text-lg text-gray-600 mt-2">Here's your performance breakdown.</p>
+            </header>
+
+            <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                <h2 class="text-2xl font-bold mb-4">Overall Score</h2>
+                <p id="final-score-text" class="text-4xl font-bold text-center text-sky-600 mb-4">8 / 10</p>
+                <p id="final-percentage-text" class="text-xl text-center text-gray-500">(80%)</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                <h2 class="text-2xl font-bold mb-4">Breakdown by Tense</h2>
+                <div id="score-breakdown">
+                    <!-- Score breakdown will be inserted here -->
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-4">Weak Areas & Practice Tips</h2>
+                <div id="weak-areas-summary">
+                    <!-- Weak areas summary will be inserted here -->
+                </div>
+            </div>
+
+            <button id="restart-btn" class="w-full bg-sky-600 text-white font-bold py-3 px-6 rounded-lg mt-8 shadow-md transition-all duration-150 hover:bg-sky-700">
+                Back to Home
+            </button>
+        </div>
+
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- 1. STATE & DATA (B2 Level) ---
+            
+            const allQuestions = {
+                // For B1 mixing
+                pastSimple: [
+                    {
+                        text: "We ___ (see) a great film *last night*.",
+                        options: [
+                            { text: "seen", correct: false },
+                            { text: "have seen", correct: false },
+                            { text: "saw", correct: true },
+                            { text: "were seeing", correct: false }
+                        ],
+                        tense: 'pastSimple',
+                        imageHint: 'Cinema screen'
+                    }
+                ],
+                presentPerfect: [
+                    {
+                        text: "I ___ (never / be) to Japan, but I'd love to go.",
+                        options: [
+                            { text: "was never", correct: false },
+                            { text: "have never been", correct: true },
+                            { text: "am never", correct: false },
+                            { text: "didn't be", correct: false }
+                        ],
+                        tense: 'presentPerfect',
+                        imageHint: 'A Japanese temple'
+                    }
+                ],
+                // B2 Tenses
+                presentPerfectContinuous: [
+                    {
+                        text: "I'm so tired. I ___ (study) for hours.",
+                        options: [
+                            { text: "have studied", correct: false },
+                            { text: "studied", correct: false },
+                            { text: "have been studying", correct: true },
+                            { text: "am studying", correct: false }
+                        ],
+                        tense: 'presentPerfectContinuous',
+                        imageHint: 'Tired student with books'
+                    },
+                    {
+                        text: "She ___ (work) at this company since 2015.",
+                        options: [
+                            { text: "has been working", correct: true },
+                            { text: "has worked", correct: false },
+                            { text: "works", correct: false },
+                            { text: "was working", correct: false }
+                        ],
+                        tense: 'presentPerfectContinuous',
+                        imageHint: 'Office building'
+                    },
+                    {
+                        text: "It ___ (rain) all day! I want to go outside.",
+                        options: [
+                            { text: "has rained", correct: false },
+                            { text: "is raining", correct: false },
+                            { text: "has been raining", correct: true },
+                            { text: "rained", correct: false }
+                        ],
+                        tense: 'presentPerfectContinuous',
+                        imageHint: 'Rain against a window'
+                    }
+                ],
+                pastPerfect: [
+                    {
+                        text: "When I arrived at the station, the train ___ (already / leave).",
+                        options: [
+                            { text: "already left", correct: false },
+                            { text: "had already left", correct: true },
+                            { text: "was already leaving", correct: false },
+                            { text: "has already left", correct: false }
+                        ],
+                        tense: 'pastPerfect',
+                        imageHint: 'Empty train platform'
+                    },
+                    {
+                        text: "He told me he ___ (not / visit) the museum before.",
+                        options: [
+                            { text: "didn't visit", correct: false },
+                            { text: "hasn't visited", correct: false },
+                            { text: "hadn't visited", correct: true },
+                            { text: "wasn't visiting", correct: false }
+                        ],
+                        tense: 'pastPerfect',
+                        imageHint: 'Museum entrance'
+                    },
+                    {
+                        text: "By the time we got to the cinema, the film ___ (start).",
+                        options: [
+                            { text: "had started", correct: true },
+                            { text: "started", correct: false },
+                            { text: "was starting", correct: false },
+                            { text: "has started", correct: false }
+                        ],
+                        tense: 'pastPerfect',
+                        imageHint: 'Cinema screen with film'
+                    }
+                ],
+                pastPerfectContinuous: [
+                    {
+                        text: "He was tired because he ___ (drive) all night.",
+                        options: [
+                            { text: "had been driving", correct: true },
+                            { text: "had driven", correct: false },
+                            { text: "was driving", correct: false },
+                            { text: "drove", correct: false }
+                        ],
+                        tense: 'pastPerfectContinuous',
+                        imageHint: 'Man driving at night'
+                    },
+                    {
+                        text: "They ___ (wait) for an hour when the bus finally arrived.",
+                        options: [
+                            { text: "were waiting", correct: false },
+                            { text: "had waited", correct: false },
+                            { text: "had been waiting", correct: true },
+                            { text: "waited", correct: false }
+                        ],
+                        tense: 'pastPerfectContinuous',
+                        imageHint: 'People at a bus stop'
+                    }
+                ],
+                futureContinuous: [
+                    {
+                        text: "This time next week, I ___ (relax) on a beach.",
+                        options: [
+                            { text: "will relax", correct: false },
+                            { text: "am relaxing", correct: false },
+                            { text: "will be relaxing", correct: true },
+                            { text: "relax", correct: false }
+                        ],
+                        tense: 'futureContinuous',
+                        imageHint: 'A tropical beach'
+                    },
+                    {
+                        text: "Don't call me at 9 PM. I ___ (watch) the final match.",
+                        options: [
+                            { text: "will watch", correct: false },
+                            { text: "will be watching", correct: true },
+                            { text: "am going to watch", correct: false },
+                            { text: "watch", correct: false }
+                        ],
+                        tense: 'futureContinuous',
+                        imageHint: 'A TV showing football'
+                    }
+                ],
+                futurePerfect: [
+                    {
+                        text: "By the end of this year, she ___ (save) enough for a new car.",
+                        options: [
+                            { text: "will save", correct: false },
+                            { text: "is saving", correct: false },
+                            { text: "will be saving", correct: false },
+                            { text: "will have saved", correct: true }
+                        ],
+                        tense: 'futurePerfect',
+                        imageHint: 'A piggy bank and a car'
+                    },
+                    {
+                        text: "By 2030, scientists ___ (find) a cure for the disease.",
+                        options: [
+                            { text: "will have found", correct: true },
+                            { text: "will find", correct: false },
+                            { text: "will be finding", correct: false },
+                            { text: "are finding", correct: false }
+                        ],
+                        tense: 'futurePerfect',
+                        imageHint: 'Scientists in a lab'
+                    }
+                ]
+            };
+
+            const quizModules = [
+                {
+                    id: 'pp_vs_ppc',
+                    title: 'Present Perfect Simple vs. Continuous',
+                    description: 'Compare results and duration.',
+                    questions: [
+                        ...allQuestions.presentPerfect, 
+                        ...allQuestions.presentPerfectContinuous
+                    ].sort(() => 0.5 - Math.random())
+                },
+                {
+                    id: 'past_s_vs_past_p',
+                    title: 'Past Simple vs. Past Perfect',
+                    description: 'Compare a past action with an *earlier* past action.',
+                    questions: [
+                        ...allQuestions.pastSimple, 
+                        ...allQuestions.pastPerfect
+                    ].sort(() => 0.5 - Math.random())
+                },
+                {
+                    id: 'past_p_vs_past_pc',
+                    title: 'Past Perfect Simple vs. Continuous',
+                    description: 'Compare a completed action vs. its duration.',
+                    questions: [
+                        ...allQuestions.pastPerfect.slice(0, 2), // Get 2 questions
+                        ...allQuestions.pastPerfectContinuous
+                    ].sort(() => 0.5 - Math.random())
+                },
+                {
+                    id: 'fc_vs_fp',
+                    title: 'Future Continuous vs. Future Perfect',
+                    description: 'An action in progress vs. an action completed.',
+                    questions: [
+                        ...allQuestions.futureContinuous, 
+                        ...allQuestions.futurePerfect
+                    ].sort(() => 0.5 - Math.random())
+                },
+                {
+                    id: 'all_perfects',
+                    title: 'All Perfect Tenses Review',
+                    description: 'A mix of all perfect tenses.',
+                    questions: [
+                        ...allQuestions.presentPerfect,
+                        ...allQuestions.presentPerfectContinuous,
+                        ...allQuestions.pastPerfect,
+                        ...allQuestions.pastPerfectContinuous
+                    ].sort(() => 0.5 - Math.random()).slice(0, 8) // Get 8 random
+                },
+                {
+                    id: 'all_b2',
+                    title: 'B2 Tense Review',
+                    description: 'A final mix of all B2 tenses.',
+                    questions: [
+                        ...allQuestions.presentPerfect,
+                        ...allQuestions.presentPerfectContinuous,
+                        ...allQuestions.pastSimple,
+                        ...allQuestions.pastPerfect,
+                        ...allQuestions.pastPerfectContinuous,
+                        ...allQuestions.futureContinuous,
+                        ...allQuestions.futurePerfect
+                    ].sort(() => 0.5 - Math.random()).slice(0, 10) // Get 10 random
+                }
+            ];
+            
+            const recommendations = {
+                pastSimple: "Remember, Past Simple is for a completed action at a *specific* past time (e.g., 'I went... *yesterday*').",
+                presentPerfect: "Use Present Perfect for results in the present ('I *have finished*') or experiences ('I *have never been*').",
+                presentPerfectContinuous: "Use Present Perfect Continuous to emphasize the *duration* of an action that started in the past and continues now (e.g., 'I *have been waiting* for hours').",
+                pastPerfect: "Use Past Perfect for an action that happened *before* another action in the past (e.g., 'The train *had left* when I *arrived*').",
+                pastPerfectContinuous: "Use Past Perfect Continuous to show the *duration* of an action that was happening *before* another past event (e.g., 'I *had been driving* for hours when I *saw* the hotel').",
+                futureContinuous: "Use Future Continuous for an action that *will be in progress* at a specific time in the future (e.g., 'This time tomorrow, I *will be flying*').",
+                futurePerfect: "Use Future Perfect for an action that *will be completed* *by* a specific time in the future (e.g., '*By 2030*, I *will have finished* my degree')."
+            };
+
+            // App's current state
+            let currentQuizData = [];
+            let currentQuestionIndex = 0;
+            let currentScore = 0;
+            let tenseScores = {};
+
+            // --- 2. DOM ELEMENTS ---
+            const screens = {
+                home: document.getElementById('home-screen'),
+                quiz: document.getElementById('quiz-screen'),
+                summary: document.getElementById('summary-screen')
+            };
+            const homeQuizList = document.querySelector('#home-screen .grid');
+            const quizTitle = document.getElementById('quiz-title');
+            const progressText = document.getElementById('progress-text');
+            const currentScoreText = document.getElementById('current-score-text');
+            const progressBar = document.getElementById('progress-bar');
+            const questionImage = document.getElementById('question-image');
+            const questionText = document.getElementById('question-text');
+            const answerButtonsContainer = document.getElementById('answer-buttons');
+            const feedbackText = document.getElementById('feedback-text');
+            const nextBtn = document.getElementById('next-btn');
+            const finalScoreText = document.getElementById('final-score-text');
+            const finalPercentageText = document.getElementById('final-percentage-text');
+            const scoreBreakdownContainer = document.getElementById('score-breakdown');
+            const weakAreasContainer = document.getElementById('weak-areas-summary');
+            const restartBtn = document.getElementById('restart-btn');
+
+            // --- 3. FUNCTIONS ---
+
+            function showScreen(screenId) {
+                Object.values(screens).forEach(screen => screen.classList.remove('active'));
+                screens[screenId].classList.add('active');
+            }
+
+            function initializeHome() {
+                homeQuizList.innerHTML = ''; // Clear existing
+                quizModules.forEach(module => {
+                    const button = document.createElement('button');
+                    button.className = 'bg-white p-6 rounded-lg shadow-md text-left transition-all duration-150 hover:shadow-lg hover:scale-105';
+                    button.innerHTML = `
+                        <h3 class="text-xl font-bold text-sky-700">${module.title}</h3>
+                        <p class="text-gray-600 mt-1">${module.description}</p>
+                    `;
+                    button.addEventListener('click', () => startQuiz(module.id));
+                    homeQuizList.appendChild(button);
+                });
+            }
+
+            function startQuiz(quizId) {
+                const quiz = quizModules.find(m => m.id === quizId);
+                // Ensure questions are shuffled for variety
+                currentQuizData = [...quiz.questions].sort(() => 0.5 - Math.random());
+                
+                // Limit to 10 questions if the pool is larger
+                if (currentQuizData.length > 10) {
+                     currentQuizData = currentQuizData.slice(0, 10);
+                }
+
+                currentQuestionIndex = 0;
+                currentScore = 0;
+                
+                tenseScores = {};
+                currentQuizData.forEach(q => {
+                    if (!tenseScores[q.tense]) {
+                        tenseScores[q.tense] = { correct: 0, total: 0 };
+                    }
+                });
+
+                quizTitle.textContent = quiz.title;
+                showQuestion();
+                showScreen('quiz');
+            }
+
+            function showQuestion() {
+                feedbackText.textContent = '';
+                feedbackText.className = 'text-lg font-medium';
+                nextBtn.style.display = 'none';
+                answerButtonsContainer.innerHTML = '';
+
+                const question = currentQuizData[currentQuestionIndex];
+                const totalQuestions = currentQuizData.length;
+
+                questionText.textContent = question.text;
+                const imageUrl = `https://placehold.co/600x300/e0f2fe/0c4a6e?text=${encodeURIComponent(question.imageHint)}`;
+                questionImage.src = imageUrl;
+                questionImage.alt = question.imageHint;
+                
+                progressText.textContent = `Question ${currentQuestionIndex + 1} / ${totalQuestions}`;
+                currentScoreText.textContent = `Score: ${currentScore}`;
+                const progressPercentage = ((currentQuestionIndex + 1) / totalQuestions) * 100;
+                progressBar.style.width = `${progressPercentage}%`;
+                
+                // Shuffle options for more challenge
+                const shuffledOptions = [...question.options].sort(() => 0.5 - Math.random());
+
+                shuffledOptions.forEach(option => {
+                    const button = document.createElement('button');
+                    button.textContent = option.text;
+                    button.className = 'answer-btn';
+                    button.dataset.correct = option.correct;
+                    button.dataset.tense = question.tense; 
+                    button.addEventListener('click', selectAnswer);
+                    answerButtonsContainer.appendChild(button);
+                });
+            }
+
+            function selectAnswer(e) {
+                const selectedButton = e.target;
+                const isCorrect = selectedButton.dataset.correct === 'true';
+                const tense = selectedButton.dataset.tense;
+
+                // Check if tense exists in tracker, if not, add it (safety check)
+                if (!tenseScores[tense]) {
+                     tenseScores[tense] = { correct: 0, total: 0 };
+                }
+
+                tenseScores[tense].total++;
+                if (isCorrect) {
+                    currentScore++;
+                    tenseScores[tense].correct++;
+                    feedbackText.textContent = "Correct!";
+                    feedbackText.classList.add('text-green-600');
+                    selectedButton.classList.add('correct');
+                } else {
+                    feedbackText.textContent = "Not quite.";
+                    feedbackText.classList.add('text-red-600');
+                    selectedButton.classList.add('wrong');
+                }
+                
+                currentScoreText.textContent = `Score: ${currentScore}`;
+
+                Array.from(answerButtonsContainer.children).forEach(button => {
+                    if (button.dataset.correct === 'true' && !isCorrect) {
+                        button.classList.add('correct');
+                    }
+                    button.disabled = true;
+                });
+
+                nextBtn.style.display = 'block';
+            }
+
+            function handleNextButton() {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < currentQuizData.length) {
+                    showQuestion();
+                } else {
+                    showSummary();
+                }
+            }
+
+            function showSummary() {
+                const totalQuestions = currentQuizData.length;
+                const percentage = totalQuestions > 0 ? Math.round((currentScore / totalQuestions) * 100) : 0;
+
+                finalScoreText.textContent = `${currentScore} / ${totalQuestions}`;
+                finalPercentageText.textContent = `(${percentage}%)`;
+
+                scoreBreakdownContainer.innerHTML = '';
+                weakAreasContainer.innerHTML = '';
+                
+                let hasWeakAreas = false;
+
+                for (const tense in tenseScores) {
+                    const score = tenseScores[tense];
+                    if (score.total > 0) {
+                        const tensePercentage = Math.round((score.correct / score.total) * 100);
+                        // 'presentPerfect' -> 'Present Perfect'
+                        const tenseName = tense.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase()); 
+
+                        const breakdownEl = document.createElement('div');
+                        breakdownEl.className = 'flex justify-between items-center mb-2 py-2 border-b';
+                        breakdownEl.innerHTML = `
+                            <span class="font-medium">${tenseName}</span>
+                            <span class="text-gray-600">${score.correct} / ${score.total} (${tensePercentage}%)</span>
+                        `;
+                        scoreBreakdownContainer.appendChild(breakdownEl);
+
+                        // Weak area defined as < 75%
+                        if (tensePercentage < 75) {
+                            hasWeakAreas = true;
+                            const weakAreaEl = document.createElement('div');
+                            weakAreaEl.className = 'mb-4';
+                            weakAreaEl.innerHTML = `
+                                <h4 class="font-bold text-lg text-red-700">${tenseName}</h4>
+                                <p class="text-gray-700">${recommendations[tense] || 'Practice this tense more.'}</p>
+                            `;
+                            weakAreasContainer.appendChild(weakAreaEl);
+                        }
+                    }
+                }
+
+                if (!hasWeakAreas) {
+                    weakAreasContainer.innerHTML = '<p class="text-green-700 font-medium">Great job! No significant weak areas detected in this quiz.</p>';
+                }
+
+                showScreen('summary');
+            }
+
+            function restartApp() {
+                showScreen('home');
+            }
+
+            // --- 4. EVENT LISTENERS ---
+            nextBtn.addEventListener('click', handleNextButton);
+            restartBtn.addEventListener('click', restartApp);
+
+            // --- 5. INITIALIZE ---
+            initializeHome();
+            showScreen('home');
+        });
+    </script>
+
+</body>
+</html>
